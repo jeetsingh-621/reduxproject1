@@ -1,0 +1,43 @@
+{
+  "users": [
+    {
+      "id": "Wk6bHbBlhaWbi8EK4EwDk",
+      "username": "jitu",
+      "email": "jitu@.com",
+      "password": "123456",
+      "confirmpassword": "123456"
+    },
+    {
+      "id": "wo48C2_-LxHAi97xmfLbK",
+      "username": "jitu",
+      "email": "jitu@.com",
+      "password": "123456",
+      "confirmpassword": "123456"
+    },
+    {
+      "id": "e2GVUernY8AHl-lQwK4S1",
+      "username": "jitu",
+      "email": "jitu@gmail.com",
+      "password": "123456",
+      "confirmpassword": "123456"
+    },
+    {
+      "id": "fpuahTClTl4gEujveSoUV",
+      "username": "aman",
+      "email": "aman@.com",
+      "password": "123456",
+      "confirmpassword": "123456"
+    }
+  ],
+  "products": [
+    {
+      "id": "0",
+      "title": "string",
+      "price": 0.1,
+      "description": "string",
+      "category": "string",
+      "image": "http://example.com"
+    }
+  ],
+  "cart": []
+}
