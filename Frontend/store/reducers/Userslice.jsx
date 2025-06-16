@@ -10,9 +10,12 @@ const initialState = {
     reducers:{
         loaduser :(state,action)=>{
             state.users=action.payload;
+        },
+        removeuser:(state,action)=>{
+            state.users = null;
         }
     }
 });
 
-export const {loaduser} = userslice.actions;
+export const {loaduser,removeuser} = userslice.actions;
 export default userslice.reducer;

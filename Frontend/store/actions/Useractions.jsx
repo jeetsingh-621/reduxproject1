@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import axios from "../../src/api/AxiosConfig";
-import { loaduser } from "../reducers/Userslice";
+import { loaduser, removeuser } from "../reducers/Userslice";
 import { useNavigate } from "react-router-dom";
 
 
@@ -19,6 +19,7 @@ export const asynccurrentuser =(user)=>async(dispatch,getsate)=>{
 
     } catch (error) {
         console.log(error);
+        toast.error(error);
     }
     
 }
@@ -27,6 +28,7 @@ export const asynclogoutuser =(user)=>async(dispatch,getsate)=>{
     try {
           
         localStorage.removeItem("user");
+        dispatch(removeuser());
         console.log("user logged out!");
         toast.success("User logged out!");
 
@@ -41,7 +43,7 @@ export const asynclogoutuser =(user)=>async(dispatch,getsate)=>{
 export const asyncloginuser =(user)=>async(dispatch,getsate)=>{
     try {
           const {data} = await axios.get(`/users?email=${user.email}&password=${user.password}`);
-        console.log(data[0]);
+        // console.log(data[0]);
         localStorage.setItem("user",JSON.stringify(data[0]));
 
     } catch (error) {

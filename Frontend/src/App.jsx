@@ -5,6 +5,7 @@ import Mainroutes from './routes/Mainroutes';
  import "react-toastify/dist/ReactToastify.css";
 import { asynccurrentuser } from '../store/actions/Useractions';
 import { useDispatch } from 'react-redux';
+import { asyncloadproducts } from '../store/actions/Productactions';
 
 const App = () => {
 
@@ -12,6 +13,7 @@ const App = () => {
   const dispatch = useDispatch();
 useEffect(()=>{
   dispatch(asynccurrentuser());
+  dispatch( asyncloadproducts());
 },[]);
   
   return (

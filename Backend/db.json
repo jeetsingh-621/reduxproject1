@@ -3,22 +3,9 @@
     {
       "id": "Wk6bHbBlhaWbi8EK4EwDk",
       "username": "jitu",
-      "email": "jitu@.com",
+      "email": "jitu@master.com",
       "password": "123456",
-      "confirmpassword": "123456"
-    },
-    {
-      "id": "wo48C2_-LxHAi97xmfLbK",
-      "username": "jitu",
-      "email": "jitu@.com",
-      "password": "123456",
-      "confirmpassword": "123456"
-    },
-    {
-      "id": "e2GVUernY8AHl-lQwK4S1",
-      "username": "jitu",
-      "email": "jitu@gmail.com",
-      "password": "123456",
+      "isadmin": true,
       "confirmpassword": "123456"
     },
     {
@@ -26,17 +13,18 @@
       "username": "aman",
       "email": "aman@.com",
       "password": "123456",
+      "isadmin": false,
       "confirmpassword": "123456"
     }
   ],
   "products": [
     {
-      "id": "0",
-      "title": "string",
-      "price": 0.1,
-      "description": "string",
-      "category": "string",
-      "image": "http://example.com"
+      "id": "4s8eJ3s-AQqtdxgpddmhN",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgd1PJttN-CB9q6n6MdJHf3ppbi0FSBD873w&s",
+      "title": "makeup",
+      "price": "124",
+      "description": "lorem makeup saman hllo what",
+      "category": "makeup"
     }
   ],
   "cart": []
