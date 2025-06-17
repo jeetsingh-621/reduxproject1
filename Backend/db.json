@@ -15,6 +15,14 @@
       "password": "123456",
       "isadmin": false,
       "confirmpassword": "123456"
+    },
+    {
+      "id": "pdJKcMHb0rf8MiGDVpHa8",
+      "username": "ram",
+      "email": "ram@gmail.com",
+      "password": "123456",
+      "confirmpassword": "123456",
+      "isadmin": false
     }
   ],
   "products": [

@@ -4,8 +4,34 @@ import { loaduser, removeuser } from "../reducers/Userslice";
 import { useNavigate } from "react-router-dom";
 
 
+export const asyncdeleteuser =(id)=>async(dispatch,getsate)=>{
+    try {
+         
+              await axios.delete("/users/"+id);
+              dispatch(asynclogoutuser())
 
-export const asynccurrentuser =(user)=>async(dispatch,getsate)=>{
+
+    } catch (error) {
+        // console.log(error);
+    }
+    
+}
+export const asyncupdateuser=(id,user)=>async (dispatch,getsate)=>{
+    try {
+        const {data} = await axios.patch("/users/"+id,user);
+        // console.log(data);
+        localStorage.setItem("user",JSON.stringify(data))
+        toast.success("User update successfully!");
+        dispatch(asynccurrentuser())
+
+
+    } catch (error) {
+        console.log(error);
+         toast.error(error.response?.data?.message || "updation failed!");
+    }
+
+}
+export const asynccurrentuser =()=>async(dispatch,getsate)=>{
     try {
          
       const user =  JSON.parse( localStorage.getItem("user"));
@@ -24,7 +50,7 @@ export const asynccurrentuser =(user)=>async(dispatch,getsate)=>{
     
 }
 
-export const asynclogoutuser =(user)=>async(dispatch,getsate)=>{
+export const asynclogoutuser =()=>async(dispatch,getsate)=>{
     try {
           
         localStorage.removeItem("user");
@@ -45,6 +71,7 @@ export const asyncloginuser =(user)=>async(dispatch,getsate)=>{
           const {data} = await axios.get(`/users?email=${user.email}&password=${user.password}`);
         // console.log(data[0]);
         localStorage.setItem("user",JSON.stringify(data[0]));
+        // toast.success("Login successfully");
 
     } catch (error) {
         console.log(error);
@@ -55,7 +82,7 @@ export const asyncloginuser =(user)=>async(dispatch,getsate)=>{
 export const asyncregisteruser=(user)=>async (dispatch,getsate)=>{
     try {
         const res = await axios.post("/users",user);
-        console.log(res);
+        // console.log(res);
         toast.success("User registered successfully!");
 
 

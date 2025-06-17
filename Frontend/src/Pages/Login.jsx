@@ -1,15 +1,17 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { asyncloginuser } from '../../store/actions/Useractions';
 import { useDispatch } from 'react-redux';
 
 const Login = () => {
 
    const dispatch = useDispatch();
+   const navigate =useNavigate();
   const{register,reset,handleSubmit }= useForm() ;
   const loginhandler =(user)=>{
     dispatch( asyncloginuser(user));
+    navigate("/");
   }
   return (
     <div className='w-full bg-zinc-900 my-10 border border-amber-300 rounded h-full'>

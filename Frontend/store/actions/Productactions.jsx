@@ -9,7 +9,7 @@ export const asyncloadproducts = ()=>async(dispatch,getstate)=>{
         const {data} =await axios.get("/products");
         dispatch(loadproduct(data));
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         toast.error(error);
     }
 }

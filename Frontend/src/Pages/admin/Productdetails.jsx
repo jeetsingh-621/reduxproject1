@@ -11,8 +11,8 @@ const Productdetails = () => {
   const products = useSelector((state) => state.productReducer.products);
   const user = useSelector((state) => state.userReducer.users);
   const product = products?.find((product) => product.id == id);
-  console.log(product);
-  console.log(user);
+  // console.log(product);
+  // console.log(user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const Productdetails = () => {
   }, [product, reset]);
 
   const updateproducthandler = (product) => {
-    console.log(product);
+    // console.log(product);
     dispatch(asyncupdateproduct(id, product));
     // navigate("/products");
   };

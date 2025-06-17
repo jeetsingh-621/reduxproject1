@@ -93,7 +93,7 @@ const Register = () => {
             </button>
 
             <p className="text-lg">
-              Don't have an account?{" "}
+              you have an account please{" "}
               <span className="text-blue-600">
                 <NavLink to="/login">Login</NavLink>
               </span>
