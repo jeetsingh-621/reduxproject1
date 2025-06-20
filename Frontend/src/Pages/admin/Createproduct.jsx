@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { asynccreateproduct } from "../../../store/actions/Productactions";
 
 const Createproduct = () => {
@@ -12,74 +12,68 @@ const Createproduct = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
- 
-
   const createproducthandler = (product) => {
     product.id = nanoid();
-    console.log(product);
     dispatch(asynccreateproduct(product));
     navigate("/products");
   };
-  return (
-    <div className="w-full bg-zinc-900 my-10 border border-amber-300 rounded h-full">
-      <div className="p-10">
-        <h1 className="text-5xl text-center font-bold">Create product</h1>
 
-        <div className="form   my-6 w-1/2 mx-auto relative">
+  return (
+    <div className="w-full bg-zinc-900 my-10 border border-amber-300 rounded h-full text-white">
+      <div className="p-4 md:p-10">
+        <h1 className="text-3xl md:text-5xl text-center font-bold">
+          Create Product
+        </h1>
+
+        <div className="form my-6 w-full md:w-1/2 mx-auto">
           <form
             onSubmit={handleSubmit(createproducthandler)}
-            action=""
-            className="p-5 flex flex-col items-center justify-center"
+            className="p-4 flex flex-col items-center justify-center"
           >
             <input
               type="url"
               {...register("image")}
-              id="user"
               required
-              className="block w-full border-b outline-0 py-2 mb-2"
-              placeholder="Image url"
+              className="block w-full border-b bg-transparent outline-0 py-2 mb-4"
+              placeholder="Image URL"
             />
             <input
               type="text"
               {...register("title")}
-              id="user"
               required
-              className="block w-full border-b outline-0 py-2 mb-2"
-              placeholder="title"
+              className="block w-full border-b bg-transparent outline-0 py-2 mb-4"
+              placeholder="Title"
             />
             <input
               type="number"
               {...register("price")}
-              id="email "
               required
-              className="block w-full border-b outline-0 py-2 mb-2"
-              placeholder="0.00"
+              className="block w-full border-b bg-transparent outline-0 py-2 mb-4"
+              placeholder="Price (e.g. 999)"
             />
             <textarea
-              className="block w-full border-b outline-0 py-2 mb-2"
               {...register("description")}
-              placeholder="Enter description here..."
-              
+              required
+              className="block w-full border-b bg-transparent outline-0 py-2 mb-4"
+              placeholder="Enter description..."
             ></textarea>
-
             <input
               type="text"
               {...register("category")}
-              id="user"
               required
-              className="block w-full border-b outline-0 py-2 mb-2"
-              placeholder="category "
+              className="block w-full border-b bg-transparent outline-0 py-2 mb-4"
+              placeholder="Category"
             />
 
-            <button className=" bg-blue-800 my-10 mx-auto py-2 w-1/2">
-              Create product
+            <button
+              type="submit"
+              className="bg-blue-800 hover:bg-blue-700 text-white py-2 w-full md:w-1/2 mt-6 rounded"
+            >
+              Create Product
             </button>
-
-           
           </form>
         </div>
       </div>

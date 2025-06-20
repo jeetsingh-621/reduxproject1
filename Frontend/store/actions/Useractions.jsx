@@ -18,11 +18,10 @@ export const asyncdeleteuser =(id)=>async(dispatch,getsate)=>{
 }
 export const asyncupdateuser=(id,user)=>async (dispatch,getsate)=>{
     try {
-        const {data} = await axios.patch("/users/"+id,user);
-        // console.log(data);
+        const {data} = await axios.patch(`/users/${id}`,user);
         localStorage.setItem("user",JSON.stringify(data))
-        toast.success("User update successfully!");
-        dispatch(asynccurrentuser())
+        // dispatch(asynccurrentuser());
+        dispatch(loaduser(data));
 
 
     } catch (error) {
@@ -38,7 +37,6 @@ export const asynccurrentuser =()=>async(dispatch,getsate)=>{
 
       if(user){
          dispatch(loaduser(user));
-        toast.success("User login successfully!");
 
         }
       else console.log("user not logged in!")
@@ -69,11 +67,16 @@ export const asynclogoutuser =()=>async(dispatch,getsate)=>{
 export const asyncloginuser =(user)=>async(dispatch,getsate)=>{
     try {
           const {data} = await axios.get(`/users?email=${user.email}&password=${user.password}`);
-        // console.log(data[0]);
-        localStorage.setItem("user",JSON.stringify(data[0]));
-        // toast.success("Login successfully");
+        if (data.length > 0) {
+            localStorage.setItem("user", JSON.stringify(data[0]));
+            dispatch(loaduser(data[0])); // ✅ Now Redux gets updated immediately
+            // toast.success("Login successful"); // Optional
+        } else {
+            toast.error("Invalid credentials");
+        }
 
     } catch (error) {
+            toast.error("Login failed!");
         console.log(error);
     }
     

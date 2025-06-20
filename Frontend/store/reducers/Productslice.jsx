@@ -10,9 +10,12 @@ const initialState = {
     reducers:{
         loadproduct :(state,action)=>{
             state.products = action.payload;
+        },
+         loadlazyproduct :(state,action)=>{
+            state.products =[...state.products, ...action.payload]
         }
     }
 });
 
-export const {loadproduct} = productslice.actions;
+export const {loadproduct,loadlazyproduct} = productslice.actions;
 export default productslice.reducer;

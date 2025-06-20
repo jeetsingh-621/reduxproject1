@@ -1,18 +1,37 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { Suspense, useEffect } from 'react'
 import Productcard from '../components/Productcard';
+import InfiniteScroll from "react-infinite-scroll-component";
+import Useinfiniteproducts from '../utils/Useinfiniteproducts';
 
 const Products = () => {
-  const products = useSelector((state=>state.productReducer.products));
-  // console.log(products);
 
-  const renderproduct = products.map((product,index)=>Productcard(product,index))
-  return ( products.length>0 ?<div className='bg-zinc-900 overflow-auto w-full my-10 p-4 py-10 flex gap-10 border border-amber-300 rounded h-full'>
+  const {products,hasMore,fetchedproducts}=Useinfiniteproducts();
 
-    {renderproduct}
+  const renderproduct = products.map((product, index) =>
+    <Productcard key={index} index={index} {...product} />
+  );
 
-  </div>: <h1 className='text-6xl mt-20 text-center text-amber-300'>Loading....</h1>
+  return (
+    <div className='bg-zinc-900 min-h-screen w-full my-10 p-4 py-10 border border-amber-300 rounded'>
+      <InfiniteScroll
+        dataLength={products.length}
+        next={fetchedproducts}
+        hasMore={hasMore}
+        loader={<h4 className='text-center text-2xl text-amber-300 mb-4'>Loading...</h4>}
+        endMessage={
+          <p className="text-center text-white text-lg mt-10">
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        <Suspense fallback={<h1 className='text-center text-5xl mt-20 text-amber-300'>LOADING...</h1>}>
+          <div className='flex flex-wrap justify-center gap-10'>
+            {renderproduct}
+          </div>
+        </Suspense>
+      </InfiniteScroll>
+    </div>
   )
 }
 
-export default Products
+export default Products;

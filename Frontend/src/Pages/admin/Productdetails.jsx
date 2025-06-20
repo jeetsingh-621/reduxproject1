@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { asyncdeleteproduct, asyncupdateproduct } from "../../../store/actions/Productactions";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  asyncdeleteproduct,
+  asyncupdateproduct,
+} from "../../../store/actions/Productactions";
+import { asyncupdateuser } from "../../../store/actions/Useractions";
+import { toast } from "react-toastify";
 
 const Productdetails = () => {
   const { id } = useParams();
-
-  // console.log(id);
   const products = useSelector((state) => state.productReducer.products);
   const user = useSelector((state) => state.userReducer.users);
   const product = products?.find((product) => product.id == id);
-  // console.log(product);
-  // console.log(user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,12 +21,11 @@ const Productdetails = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm();
 
-   useEffect(() => {
+  useEffect(() => {
     if (product) {
       reset({
         image: product.image,
@@ -37,105 +37,157 @@ const Productdetails = () => {
     }
   }, [product, reset]);
 
-  const updateproducthandler = (product) => {
-    // console.log(product);
-    dispatch(asyncupdateproduct(id, product));
-    // navigate("/products");
+  // ✅ Add to Cart Handler
+  const Addtocarthandler = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    const copyuser = {
+      ...user,
+      cart: user.cart.map((item) => ({
+        product: { ...item.product },
+        quantity: item.quantity,
+      })),
+    };
+
+    const index = copyuser.cart.findIndex((c) => c.product.id === product.id);
+
+    if (index === -1) {
+      copyuser.cart.push({
+        product: {
+          id: product.id,
+          title: product.title,
+          image: product.image,
+          price: product.price,
+          description: product.description,
+        },
+        quantity: 1,
+      });
+    } else {
+      copyuser.cart[index].quantity += 1;
+    }
+
+    dispatch(asyncupdateuser(copyuser.id, copyuser));
+    toast.success("Item added to cart!");
   };
 
-  const deletehandler =()=>{
+  // ✅ Update Handler
+  const updateproducthandler = (data) => {
+    dispatch(asyncupdateproduct(id, data));
+    toast.success("Product updated!");
+  };
+
+  // ✅ Delete Handler
+  const deletehandler = () => {
     dispatch(asyncdeleteproduct(id));
+    toast.success("Product deleted!");
     navigate("/products");
-  }
+  };
 
   return product ? (
-    <div>
-      <div className="w-[85vw] mt-10 mx-auto bg-gray-900 px-20 py-10">
-        <div className="w-full flex  gap-40 p-4">
+    <div className="text-white">
+      {/* Product View */}
+      <div className="w-full max-w-6xl mt-10 mx-auto bg-gray-900 px-4 md:px-20 py-10 rounded">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-20">
           <img
-            className="max-w-[400px] w-full h-1/2 object-cover"
+            className="w-full max-w-xs mx-auto md:max-w-[400px] object-contain bg-white rounded"
             src={product.image}
             alt=""
           />
           <div className="mt-3">
-            <h1 className="text-4xl font-bold text-amber-300">
+            <h1 className="text-2xl md:text-4xl font-bold text-amber-300">
               {product.title}
             </h1>
-            <p className="text-md text-justify  my-2">{product.description} </p>
-            <p className="text-xl text-justify  my-2">{product.category} </p>
-            <div className=" items-center justify-between">
-              <p className="my-8 text-3xl text-green-400">
+            <p className="text-sm md:text-md text-justify my-2">
+              {product.description}
+            </p>
+            <p className="text-base md:text-xl my-2">Category: {product.category}</p>
+            <div className="mt-6">
+              <p className="text-xl md:text-3xl text-green-400">
                 Rs. {product.price}
               </p>
-              {/* <Link to=''>more info</Link> */}
-              <button className="bg-blue-700 px-6 py-1 mt-3 items-center">
-                Add to Cart
-              </button>
+              {user && (
+                <button
+                  onClick={Addtocarthandler}
+                  className="bg-blue-700 hover:bg-blue-800 px-6 py-2 mt-4 rounded"
+                >
+                  Add to Cart
+                </button>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-    {user && user.isadmin &&   <div className="right w-[70vw] mx-auto my-14 overflow-auto py-10 bg-gray-900 px-20">
-        <h1 className="text-center text-4xl font-bold text-amber-300 underline">
-          Update product
-        </h1>
-        <form
-          onSubmit={handleSubmit(updateproducthandler)}
-          action=""
-          className="p-5 flex flex-col items-center justify-center"
-        >
-          <input
-            type="url"
-            {...register("image")}
-            id="user"
-            required
-            className="block w-full border-b outline-0 py-2 mb-2"
-            placeholder="Image url"
-          />
-          <input
-            type="text"
-            {...register("title")}
-            id="user"
-            required
-            className="block w-full border-b outline-0 py-2 mb-2"
-            placeholder="title"
-          />
-          <input
-            type="number"
-            {...register("price")}
-            id="email "
-            required
-            className="block w-full border-b outline-0 py-2 mb-2"
-            placeholder="0.00"
-          />
-          <textarea
-            className="block w-full overflow-auto border-b outline-0 py-2 mb-2"
-            {...register("description")}
-            placeholder="Enter description here..."
-          ></textarea>
+      {/* Admin Update Form */}
+      {user && user.isadmin && (
+        <div className="w-full max-w-4xl mx-auto my-14 bg-gray-900 px-4 md:px-10 py-10 rounded text-white">
+          <h1 className="text-center text-2xl md:text-4xl font-bold text-amber-300 underline mb-6">
+            Update Product
+          </h1>
 
-          <input
-            type="text"
-            {...register("category")}
-            id="user"
-            required
-            className="block w-full border-b outline-0 py-2 mb-2"
-            placeholder="category "
-          />
+          <form
+            onSubmit={handleSubmit(updateproducthandler)}
+            className="flex flex-col gap-4"
+          >
+            <input
+              type="url"
+              {...register("image")}
+              required
+              className="w-full border-b bg-transparent outline-none py-2"
+              placeholder="Image URL"
+            />
+            <input
+              type="text"
+              {...register("title")}
+              required
+              className="w-full border-b bg-transparent outline-none py-2"
+              placeholder="Product Title"
+            />
+            <input
+              type="number"
+              {...register("price")}
+              required
+              className="w-full border-b bg-transparent outline-none py-2"
+              placeholder="Price (e.g. 500)"
+            />
+            <textarea
+              {...register("description")}
+              required
+              className="w-full border-b bg-transparent outline-none py-2"
+              placeholder="Product Description..."
+            ></textarea>
+            <input
+              type="text"
+              {...register("category")}
+              required
+              className="w-full border-b bg-transparent outline-none py-2"
+              placeholder="Category"
+            />
 
-          <button className=" bg-blue-800 my-10 mx-auto py-2 w-1/2">
-            Update product
-          </button>
-            <button type="button" onClick={deletehandler} className=" bg-red-800 my-10 mx-auto py-2 w-1/2">
-            Delete product
-          </button>
-        </form>
-      </div>}
-    
+            <div className="flex flex-col md:flex-row gap-4 mt-6">
+              <button
+                type="submit"
+                className="bg-blue-800 hover:bg-blue-700 w-full py-2 rounded text-white"
+              >
+                Update Product
+              </button>
+              <button
+                type="button"
+                onClick={deletehandler}
+                className="bg-red-800 hover:bg-red-700 w-full py-2 rounded text-white"
+              >
+                Delete Product
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   ) : (
-    "loading..."
+    <div className="text-center text-white py-10">Loading...</div>
   );
 };
 

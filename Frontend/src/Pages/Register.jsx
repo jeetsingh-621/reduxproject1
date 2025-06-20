@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 
 const Register = () => {
   const dispatch = useDispatch();
-  const navigate =  useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -21,29 +21,33 @@ const Register = () => {
   const registerhandler = (user) => {
     user.id = nanoid();
     user.isadmin = false;
+    user.cart = [];
     dispatch(asyncregisteruser(user));
     navigate("/login");
   };
-  return (
-    <div className="w-full bg-zinc-900 my-10 border border-amber-300 rounded h-full">
-      <div className="p-10">
-        <h1 className="text-5xl text-center font-bold">Register</h1>
 
-        <div className="form   my-6 w-1/2 mx-auto relative">
+  return (
+    <div className="w-full bg-zinc-900 my-10 border border-amber-300 rounded h-full text-white">
+      <div className="p-6 md:p-10">
+        <h1 className="text-3xl md:text-5xl text-center font-bold mb-6">
+          Register
+        </h1>
+
+        <div className="form w-full max-w-md mx-auto">
           <form
             onSubmit={handleSubmit(registerhandler)}
-            action=""
-            className="p-5 flex flex-col items-center justify-center"
+            className="p-4 flex flex-col gap-4"
           >
+            {/* Username */}
             <input
               type="text"
               {...register("username", { required: "Name is required" })}
-              id="user"
-              required
-              className="block w-full border-b outline-0 py-2 mb-2"
-              placeholder="username"
+              className="w-full border-b bg-transparent outline-none py-2"
+              placeholder="Username"
             />
-            <p style={{ color: "red" }}>{errors.username?.message}</p>
+            <p className="text-red-400 text-sm">{errors.username?.message}</p>
+
+            {/* Email */}
             <input
               type="text"
               {...register("email", {
@@ -53,12 +57,12 @@ const Register = () => {
                   message: "Invalid email format",
                 },
               })}
-              id="email "
-              required
-              className="block w-full border-b outline-0 py-2 mb-2"
+              className="w-full border-b bg-transparent outline-none py-2"
               placeholder="Email"
             />
-            <p style={{ color: "red" }}>{errors.email?.message}</p>
+            <p className="text-red-400 text-sm">{errors.email?.message}</p>
+
+            {/* Password */}
             <input
               type="password"
               {...register("password", {
@@ -68,35 +72,35 @@ const Register = () => {
                   message: "Password must be at least 6 characters",
                 },
               })}
-              id="password"
-              required
-              className="block w-full border-b outline-0 py-2"
+              className="w-full border-b bg-transparent outline-none py-2"
               placeholder="Password"
             />
-            <p style={{ color: "red" }}>{errors.password?.message}</p>
+            <p className="text-red-400 text-sm">{errors.password?.message}</p>
+
+            {/* Confirm Password */}
             <input
               type="password"
               {...register("confirmpassword", {
                 required: "Confirm Password is required",
                 validate: (value) =>
-                  value == password || "password do not match",
+                  value === password || "Passwords do not match",
               })}
-              required
-              id="confirmpassword"
-              className="block w-full border-b outline-0 py-2"
+              className="w-full border-b bg-transparent outline-none py-2"
               placeholder="Confirm Password"
             />
-            <p style={{ color: "red" }}>{errors.confirmpassword?.message}</p> 
+            <p className="text-red-400 text-sm">
+              {errors.confirmpassword?.message}
+            </p>
 
-            <button className=" bg-blue-800 my-10 mx-auto py-2 w-1/2">
+            <button className="bg-blue-800 hover:bg-blue-700 w-full py-2 rounded mt-6">
               Register
             </button>
 
-            <p className="text-lg">
-              you have an account please{" "}
-              <span className="text-blue-600">
-                <NavLink to="/login">Login</NavLink>
-              </span>
+            <p className="text-center mt-4 text-sm">
+              Already have an account?{" "}
+              <NavLink to="/login" className="text-blue-400 hover:underline">
+                Login
+              </NavLink>
             </p>
           </form>
         </div>
