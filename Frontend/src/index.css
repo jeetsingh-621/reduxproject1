@@ -1,4 +1,7 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .Toastify__progress-bar {
   width: 100% !important;
   left: 0 !important;
